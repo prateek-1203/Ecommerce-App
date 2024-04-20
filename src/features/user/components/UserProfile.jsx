@@ -42,7 +42,9 @@ export default function UserProfile() {
      setValue('email',address.email)
      setValue('city',address.city)
      setValue('state',address.state)
-    
+     setValue('pincode',address.pincode)
+     setValue('phone',address.phone)
+     setValue('street',address.street)
   }
 
   return (
