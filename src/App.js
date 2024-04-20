@@ -20,6 +20,8 @@ import { selectLoggedInUser } from './features/auth/authSlice';
 import PageNotFound from './pages/404';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import UserOrdersPage from './pages/UserOrdersPage';
+import UserProfilePage from './pages/UserProfilePage';
+import { fetchLoggedInUserAsync } from './features/user/userSlice';
 
 const router = createBrowserRouter([
   {
@@ -66,6 +68,10 @@ const router = createBrowserRouter([
     path: "/orders",
     element:<UserOrdersPage></UserOrdersPage>
   },
+  {
+    path: "/profile",
+    element:<UserProfilePage></UserProfilePage>
+  },
 ]);
 
 function App() {
@@ -76,6 +82,7 @@ function App() {
     if(user)
     {
      dispatch(fetchItemsByUserIdAsync(user.id))
+     dispatch(fetchLoggedInUserAsync(user.id))
     }
   },[dispatch,user])
   return (
