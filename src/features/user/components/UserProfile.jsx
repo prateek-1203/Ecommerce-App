@@ -53,7 +53,7 @@ export default function UserProfile() {
        <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
          <h1 className='text-4xl my-5 font-bold tracking-tight text-gray-900'>Name: {user.name ? user.name: 'New User'}</h1>
          <h3 className='text-xl my-5 font-bold tracking-tight text-red-900'>Email address: {user.email}</h3>
-       
+         {user.role==='admin' && <h3 className='text-xl my-5 font-bold tracking-tight text-red-900'>role: {user.role}</h3>}
      <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
   <p className="mt-0.5 text-sm text-gray-500">Your Addresses :</p>
     {user.addresses.map((address,index)=>
@@ -189,30 +189,6 @@ export default function UserProfile() {
         Edit Address
       </button>
     </div>
-      {/* <div className="border-b border-gray-900/10 pb-12">
-        <h2 className="text-base font-semibold leading-7 text-gray-900">Address</h2>
-        <p className="mt-1 text-sm leading-6 text-gray-600">
-         Choose from Existing addresses
-        </p>
-        <ul role="list">
-      {user.addresses.map((address,index) => (
-        <li key={index} className="flex justify-between gap-x-6 px-5 py-5 border-solid border-2 border-gray-200">
-          <div className="flex min-w-0 gap-x-4">
-            <input onChange={handleAddress} name='address' type='radio' className='h-4 w-4 border-gray-300 text-indigo-600' value={index}/>
-            <div className="min-w-0 flex-auto">
-              <p className="text-sm font-semibold leading-6 text-gray-900">{address.name}</p>
-              <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.street}</p>
-              <p className="mt-1 truncate text-xs leading-5 text-gray-500">{address.pinCode}</p>
-            </div>
-          </div>
-          <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-            <p className="text-sm leading-6 text-gray-900">Phone: {address.phone}</p>
-            <p className="text-sm leading-6 text-gray-600">{address.city}</p>
-          </div>
-        </li>
-      ))}
-    </ul>
-      </div> */}
     </div>
 
   </form>:null}

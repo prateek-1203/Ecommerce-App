@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {selectAllProducts,fetchAllProductsFilterAsync, selectTotalItems, selectBrands, selectCategories, fetchBrandsAsync, fetchCategoriesAsync } from "../ProductListSlice";
+import {selectAllProducts,fetchAllProductsFilterAsync, selectTotalItems, selectBrands, selectCategories, fetchBrandsAsync, fetchCategoriesAsync } from "../../product-list/ProductListSlice";
 import { Link } from "react-router-dom";
 import { Fragment} from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
@@ -26,7 +26,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function ProductList() {
+export default function AdminProductList() {
   const dispatch = useDispatch();
    const products=useSelector(selectAllProducts);
    const brands=useSelector(selectBrands);
@@ -185,6 +185,13 @@ export default function ProductList() {
 
                   {/* Product grid */}
                   <div className="lg:col-span-3">
+                  <div>
+          <Link 
+          to='/admin/product-form'
+          className="rounded-md my-5 mx-10 bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Add New Product
+          </Link>
+          </div>
                     {
                      <ProductGrid products={products.data}></ProductGrid>
                     }
@@ -453,6 +460,7 @@ function ProductGrid({products}){
 
       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
         {products && products.map((product) => (
+          <div>
           <Link to={`/product-details/${product.id}`}>
           <div key={product.id} className="group relative border-solid border-2 p-2 border-gray-200">
             <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
@@ -489,11 +497,19 @@ function ProductGrid({products}){
               </div>
               
             </div>
-          </div>
-          {product.deleted && <div>
+            {product.deleted && <div>
                 <p className="text-sm text-red-400">product deleted</p>
             </div>}
+          </div>
           </Link>
+          <div className="mt-5">
+          <Link 
+          to={`/admin/product-form/edit/${product.id}`}
+          className="rounded-md my-5 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            Edit Product
+          </Link>
+          </div>
+          </div>
         ))}
       </div>
     </div>
