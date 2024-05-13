@@ -19,25 +19,25 @@ export default function UserProfile() {
   } = useForm();
 
   const dispatch = useDispatch();
-  const user=useSelector(selectUserInfo)
+  const userInfo=useSelector(selectUserInfo)
   const [selectedEditIndex,setSelectedEditIndex]=useState(-1);
 
   const handleEdit = (addressUpdate,index)=>{
-    const newUser={...user,addresses:[...user.addresses]}
+    const newUser={...userInfo,addresses:[...userInfo.addresses]}
     newUser.addresses.splice(index,1,addressUpdate);
     dispatch(updateUserAsync(newUser))
     setSelectedEditIndex(-1)
   }
   
   const handleRemove = (e,index)=>{
-     const newUser={...user,addresses:[...user.addresses]}
+     const newUser={...userInfo,addresses:[...userInfo.addresses]}
      newUser.addresses.splice(index,1);
      dispatch(updateUserAsync(newUser))
   }
 
   const handleEditForm= (index)=>{
      setSelectedEditIndex(index)
-     const address=user.addresses[index]
+     const address=userInfo.addresses[index]
      setValue('name',address.name)
      setValue('email',address.email)
      setValue('city',address.city)
@@ -51,12 +51,12 @@ export default function UserProfile() {
       <div>
         <div className="mx-auto bg-white mt-12 max-w-7xl px-4 sm:px-6 lg:px-8">
        <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-         <h1 className='text-4xl my-5 font-bold tracking-tight text-gray-900'>Name: {user.name ? user.name: 'New User'}</h1>
-         <h3 className='text-xl my-5 font-bold tracking-tight text-red-900'>Email address: {user.email}</h3>
-         {user.role==='admin' && <h3 className='text-xl my-5 font-bold tracking-tight text-red-900'>role: {user.role}</h3>}
+         <h1 className='text-4xl my-5 font-bold tracking-tight text-gray-900'>Name: {userInfo.name ? userInfo.name: 'New User'}</h1>
+         <h3 className='text-xl my-5 font-bold tracking-tight text-red-900'>Email address: {userInfo.email}</h3>
+         {userInfo.role==='admin' && <h3 className='text-xl my-5 font-bold tracking-tight text-red-900'>role: {userInfo.role}</h3>}
      <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
   <p className="mt-0.5 text-sm text-gray-500">Your Addresses :</p>
-    {user.addresses.map((address,index)=>
+    {userInfo.addresses.map((address,index)=>
     <div>
       {selectedEditIndex === index? 
       <form className='bg-white px-5 py-12 mt-12' noValidate onSubmit={handleSubmit((data)=>{

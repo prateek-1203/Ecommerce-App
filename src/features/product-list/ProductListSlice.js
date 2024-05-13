@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { createProduct, fetchAllProducts,fetchAllProductsFilter,fetchBrands,fetchCategories, fetchProductById,updateProduct } from './ProductListAPI';
 
+
 const initialState = {
   products: [],
   brands:[],
@@ -10,14 +11,6 @@ const initialState = {
   selectedProduct:null,
 };
 
-export const fetchAllProductsAsync = createAsyncThunk(
-  'product-list/fetchAllProducts',
-  async () => {
-    const response = await fetchAllProducts();
-    // The value we return becomes the `fulfilled` action payload
-    return response.data;
-  }
-);
 
 export const fetchAllProductByIdAsync = createAsyncThunk(
   'product-list/fetchProductById',
@@ -30,8 +23,8 @@ export const fetchAllProductByIdAsync = createAsyncThunk(
 
 export const fetchAllProductsFilterAsync =createAsyncThunk(
    'product-list/fetchAllProductsFilter',
-    async({filter,sort,pagination})=>{
-        const response =await fetchAllProductsFilter(filter,sort,pagination);
+    async({filter,sort,pagination,admin})=>{
+        const response =await fetchAllProductsFilter(filter,sort,pagination,admin);
         return response.data;
     }
 );
@@ -66,8 +59,10 @@ export const createProductAsync = createAsyncThunk(
 export const updateProductAsync = createAsyncThunk(
   'product-list/updateProduct',
   async (update) => {
+    // console.log('update->',update)
     const response = await updateProduct(update);
     // The value we return becomes the `fulfilled` action payload
+    
     return response.data;
   }
 );
@@ -83,13 +78,6 @@ export  const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllProductsAsync.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchAllProductsAsync.fulfilled, (state, action) => {
-        state.status = 'idle';
-        state.products = action.payload;
-      })
       .addCase(fetchAllProductsFilterAsync.pending, (state) => {
         state.status = 'loading';
       })
@@ -124,14 +112,17 @@ export  const productSlice = createSlice({
       })
       .addCase(createProductAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.products.push(action.payload);
+        Object.values(state.products).push(action.payload);
+       
       })
       .addCase(updateProductAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(updateProductAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        const index=state.products.findIndex(product=>product.id===action.payload.id)
+        // const Prod=[];
+        // Prod.push(state.products);
+        const index=Object.values(state.products).findIndex(product=>product.id===action.payload.id)
         state.products[index]=action.payload;
       })
 

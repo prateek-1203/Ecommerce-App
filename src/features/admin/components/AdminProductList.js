@@ -6,7 +6,7 @@ import { Fragment} from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronLeftIcon, ChevronRightIcon,StarIcon } from '@heroicons/react/20/solid'
-import { ITEMS_PER_PAGE } from "../../../app/constants";
+import { ITEMS_PER_PAGE,discountedPrice } from "../../../app/constants";
 import {
   ChevronDownIcon,
   FunnelIcon,
@@ -29,6 +29,7 @@ function classNames(...classes) {
 export default function AdminProductList() {
   const dispatch = useDispatch();
    const products=useSelector(selectAllProducts);
+  //  console.log("hello->",products)
    const brands=useSelector(selectBrands);
    const categories=useSelector(selectCategories);
    const totalItems=useSelector(selectTotalItems);
@@ -82,7 +83,7 @@ export default function AdminProductList() {
 
    useEffect(()=>{
        const pagination={_page:page,_per_page:ITEMS_PER_PAGE}
-       dispatch(fetchAllProductsFilterAsync({filter,sort,pagination}))
+       dispatch(fetchAllProductsFilterAsync({filter,sort,pagination,admin:true}))
    },[dispatch,filter,sort,page])
 
    useEffect(()=>{
@@ -489,7 +490,7 @@ function ProductGrid({products}){
               </div>
               <div>
               <p className="text-sm font-medium text-gray-900">
-                ${Math.round(product.price*(1-product.discountPercentage/100))}
+              ${discountedPrice(product)}
               </p>
               <p className="text-sm font-medium text-gray-400 line-through">
                 ${product.price}

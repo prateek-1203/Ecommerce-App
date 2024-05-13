@@ -6,7 +6,7 @@ import { Fragment} from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronLeftIcon, ChevronRightIcon,StarIcon } from '@heroicons/react/20/solid'
-import { ITEMS_PER_PAGE } from "../../../app/constants";
+import { ITEMS_PER_PAGE, discountedPrice } from "../../../app/constants";
 import {
   ChevronDownIcon,
   FunnelIcon,
@@ -29,6 +29,7 @@ function classNames(...classes) {
 export default function ProductList() {
   const dispatch = useDispatch();
    const products=useSelector(selectAllProducts);
+   
    const brands=useSelector(selectBrands);
    const categories=useSelector(selectCategories);
    const totalItems=useSelector(selectTotalItems);
@@ -453,8 +454,8 @@ function ProductGrid({products}){
 
       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
         {products && products.map((product) => (
-          <Link to={`/product-details/${product.id}`}>
-          <div key={product.id} className="group relative border-solid border-2 p-2 border-gray-200">
+          <Link to={`/product-details/${product.id}`} key={product.id}>
+          <div className="group relative border-solid border-2 p-2 border-gray-200">
             <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
               <img
                 src={product.thumbnail}
@@ -481,7 +482,7 @@ function ProductGrid({products}){
               </div>
               <div>
               <p className="text-sm font-medium text-gray-900">
-                ${Math.round(product.price*(1-product.discountPercentage/100))}
+                ${discountedPrice(product)}
               </p>
               <p className="text-sm font-medium text-gray-400 line-through">
                 ${product.price}

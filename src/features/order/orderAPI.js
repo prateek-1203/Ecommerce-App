@@ -12,3 +12,38 @@ export function createOrder(order) {
   }
   );
 }
+
+
+export function updateOrder(order) {
+  return new Promise(async (resolve) =>{
+      const response=await fetch('http://localhost:8080/orders/'+order.id,{
+        method:'PUT',
+        body:JSON.stringify(order),
+        headers:{'content-type':'application/json'}
+      })
+      const data =await response.json();
+      resolve({data});
+  }
+  );
+}
+
+export function fetchAllOrders(pagination) {
+  
+console.log(pagination)
+  
+   let queryString='';
+  for(let key in pagination) {
+      queryString+=`${key}=${pagination[key]}&`
+  }
+
+  return new Promise(async (resolve)=>{
+     
+    const response = await fetch('http://localhost:8080/orders?'+queryString);
+
+    const data=await response.json();
+   
+    const totalOrders = data.length;
+
+    resolve({data:{orders:data,totalOrders:+totalOrders}})
+  });
+}
